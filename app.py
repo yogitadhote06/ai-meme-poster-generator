@@ -62,6 +62,7 @@ def generate_caption(topic, tone):
     #font = ImageFont.truetype("fonts/Arial.ttf", font_size)
     
 def add_text_to_image(image, caption):
+    image = image.copy()
     draw = ImageDraw.Draw(image)
 
     width, height = image.size
