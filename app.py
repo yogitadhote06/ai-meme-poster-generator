@@ -5,6 +5,8 @@ import os
 import requests
 from dotenv import load_dotenv
 import io
+import os
+from PIL import ImageDraw, ImageFont
 
 # Load environment variables
 load_dotenv()
@@ -55,31 +57,29 @@ def generate_caption(topic, tone):
         return "Caption generation failed. Try again."
 
 # Add Text to Image
-def add_text_to_image(image, text):
-    draw = ImageDraw.Draw(image)
+#def add_text_to_image(image, text):
+    #draw = ImageDraw.Draw(image)
     #font = ImageFont.truetype("fonts/Arial.ttf", font_size)
-    import os
-from PIL import ImageFont
-
-font_path = os.path.join("fonts", "Arial.ttf")
-
-try:
-    font = ImageFont.truetype(font_path, font_size)
-except:
-    font = ImageFont.load_default()
     
-    wrapped_text = textwrap.fill(text, width=25)
-    
+def add_text_to_image(image, caption):
+    draw = ImageDraw.Draw(image)
+
     width, height = image.size
-    bbox = draw.multiline_textbbox((0, 0), wrapped_text, font=font)
-    text_width = bbox[2]
-    text_height = bbox[3]
-    
+    font_size = int(height / 10)
+
+    font_path = os.path.join("fonts", "Arial.ttf")
+
+    try:
+        font = ImageFont.truetype(font_path, font_size)
+    except:
+        font = ImageFont.load_default()
+
+    text_width, text_height = draw.textbbox((0, 0), caption, font=font)[2:]
     x = (width - text_width) / 2
-    y = height - text_height - 50
-    
-    draw.multiline_text((x, y), wrapped_text, font=font, fill=text_color, align="center")
-    
+    y = height - text_height - 20
+
+    draw.text((x, y), caption, font=font, fill="white")
+
     return image
 
 # Generate Button
