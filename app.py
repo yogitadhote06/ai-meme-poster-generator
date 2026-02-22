@@ -57,7 +57,16 @@ def generate_caption(topic, tone):
 # Add Text to Image
 def add_text_to_image(image, text):
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype("fonts/Arial.ttf", font_size)
+    #font = ImageFont.truetype("fonts/Arial.ttf", font_size)
+    import os
+from PIL import ImageFont
+
+font_path = os.path.join("fonts", "Arial.ttf")
+
+try:
+    font = ImageFont.truetype(font_path, font_size)
+except:
+    font = ImageFont.load_default()
     
     wrapped_text = textwrap.fill(text, width=25)
     
